@@ -4,10 +4,11 @@ namespace Lab1CS
 {
     class ArrList
     {
-        int cnt = 0;
+        int cnt = 0; // pos < cnt if cnt != 0
         int[] buf = null;
         int size = 1;
-        public void Init()
+
+        public ArrList()
         {
             buf = new int[size];
         }
@@ -27,38 +28,41 @@ namespace Lab1CS
         }
         public void Ins(int val, int pos)
         {
+            if (pos ==  cnt && pos == 0) Add(val);
 
-            if (pos < 0 || pos > cnt)
+            else if (pos < cnt) 
             {
-                throw new ArgumentOutOfRangeException($"Invalid position {pos} for insertion");
-            }
+                cnt++;
+                if (cnt >= size) Expd();
 
-            if (pos <= cnt && pos >= 0)
-            {
-                if (cnt >= size) { Expd(); }
-                for (int i = pos; i == cnt; i++)
+                for (int i = cnt - 1; i != pos; i--)
                 {
-                    buf[i + 1] = buf[i];
+                    buf[i] = buf[i - 1];
                 }
                 buf[pos] = val;
-                cnt++;
             }
         }
         public void Del(int pos)
         {
-            if (pos <= cnt)
+            if (pos < cnt)
             {
-                for (int i = pos; i <= cnt; i++)
+                for (int i = pos; i < cnt - 1; i++)
                 {
                     buf[i] = buf[i+1];
                 }
+                cnt--;
+            }
+
+            else if (pos == cnt - 1 && cnt > 0)
+            {
+                buf[pos] = 0;
                 cnt--;
             }
         }
 
         public void Clr()
         {
-            for (int i = 0; i < cnt; i--)
+            for (int i = 0; i < cnt; i++)
             {
                 buf[i] = 0;
             }
@@ -72,31 +76,32 @@ namespace Lab1CS
 
         public int this[int i]
         { 
-            get {
-                if (cnt <= i || i < 0)
-                {
-                    throw new IndexOutOfRangeException($"There is no index {i} in array"); 
-                }
-
-                return buf[i]; }
-
-            set {
-                if (cnt <= i || i < 0)
-                {
-                    throw new IndexOutOfRangeException($"There is no index {i} in array");
-                }
+            get
+            {
+                if (i >= cnt || i < 0) return 0;
                 
-                buf[i] = value; }
+                return buf[i];
+            }
+
+            set
+            {
+                if (i >= cnt || i < 0) return;
+
+                buf[i] = value; 
+            }
         }
+
         public void Shw()
         {
             if (cnt >= 0)
             {
-                for (int i = 0; i <= cnt; i++)
+                for (int i = 0; i < cnt; i++)
                 {
-                    Console.Write($"{buf[i]} ");
+                    if (i == cnt - 1) Console.Write($"{buf[i]}. ");
+                    else Console.Write($"{buf[i]}, ");
                 }
             }
+            else Console.WriteLine("Нет элементов в array листе");
         }
     }
 }

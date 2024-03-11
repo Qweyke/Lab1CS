@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Reflection;
-
 
 namespace Lab1CS
 {
     public class ChainList
     {
-        public class Node //private?
+        public class Node
         {
             public int Data
             {
@@ -25,11 +22,11 @@ namespace Lab1CS
         }
 
         Node head = null;
-        int count = 0; // 0 pos 1 elem
+        int count = 0; // pos < cnt if head != null
 
         public Node Find(int posit)
         {
-            if (posit >= count) return null;
+            if (posit >= count || head == null) return null; //if no el rtrn nthng
 
             int i = 0;
             Node P = head;
@@ -40,7 +37,7 @@ namespace Lab1CS
                 i++;
             }
 
-            if (i == count) return P;
+            if (i == posit) return P;
             else return null;
         }
         public void Addit(int value)
@@ -58,58 +55,55 @@ namespace Lab1CS
             }
             count++;
         }
-        public void Insert(int posit, int value)
+        public void Insert(int value, int posit)
         {
-            if (posit < 0 || posit > count)
-            {
-                throw new ArgumentOutOfRangeException($"Invalid position {posit} for insertion");
-            }
+            if (posit == count && posit == 0) Addit(value);
 
-            if (posit <= count && head != null)
-            {
-                Node prev = Find(posit - 1);
-                Node old_next = prev.Next;
-                Node new_next = new Node(value);
-                prev.Next = new_next;
-                new_next.Next = old_next;
-                count++;
-            }
-            else if (head == null)
-            {
-                head = new Node(value);
-                count++;
-            }
+            else if (posit < count)
+            {   
+                if (posit == 0)
+                {
+                    Node curr = Find(posit);
+                    new Node(value) { Next = curr };
+                    count++;
+                }
 
+                else 
+                {
+                    Node prev = Find(posit - 1);
+                    Node curr = Find(posit);
+                    Node insr = new Node(value) { Next = curr };
+                    prev.Next = insr;
+                    count++;
+                }           
+            }            
         }
         public void Delete(int posit)
         {
-            if (posit < 0 || posit >= count)
-            {
-                throw new ArgumentOutOfRangeException($"Invalid position {posit} for deletion");
-            }
-
             if (posit < count && posit > 0)
             {
                 Node prev = Find(posit - 1);
-                Node GoodBye = Find(posit);
-                prev.Next = GoodBye.Next;
+                Node current = prev.Next;
+                prev.Next = current.Next; 
                 count--;
             }
-            else if (posit == 0 && head != null)
+
+            else if (posit == 0 && posit < count)
+            {
+                head = head.Next;
+                count--;
+            }
+
+            else if (posit == 0 && count == 1)
             {
                 head = null;
                 count--;
             }
         }
-        public void Clr()
+        public void Clear()
         {
-            while (count != 0)
-            {
-                Node vanished = Find(count - 1);
-                vanished.Next = null;
-                count--;
-            }
             head = null;
+            count = 0;
         }
         public int Count
         {
@@ -120,35 +114,34 @@ namespace Lab1CS
         {
             get
             {
-                if (count <= i || i < 0)
-                {
-                    throw new IndexOutOfRangeException($"There is no index {i} in list");
-                }
+                if (i >= count || i < 0) return 0;
 
-                Node th = Find(i);
-
-                return th.Data;
+                Node shw = Find(i);
+                return shw.Data;
             }
 
             set
             {
-                if (count <= i || i < 0)
-                {
-                    throw new IndexOutOfRangeException($"There is no index {i} in list");
-                }
-
-                Node th = Find(i);
-                th.Data = value;
+                if (i >= count || i < 0) return;
+                
+                Node st = Find(i);
+                st.Data = value;
             }
         }
-        public void Shw()
+
+        public void Show()
         {
             Node cur = head;
-            while (cur != null)
+            if (cur != null)
             {
-                Console.Write($"{cur.Data} ");
-                cur = cur.Next;
+                while (cur.Next != null)
+                {
+                    Console.Write($"{cur.Data}; ");
+                    cur = cur.Next;
+                }
+                Console.Write($"{cur.Data}. ");
             }
+            else Console.WriteLine("Нет элементов в chain листе");           
         }
     }
 }
