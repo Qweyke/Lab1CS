@@ -2,15 +2,15 @@
 
 namespace Lab1CS
 {
-    class ArrList
+    class BrwsList<T>
     {
         int cnt = 0; // pos < cnt if cnt != 0
-        int[] buf = null;
+        T[] buf = null;
         int size = 1;
 
-        public ArrList()
+        public BrwsList()
         {
-            buf = new int[size];
+            buf = new T[size];
         }
 
         private void Expd()
@@ -19,20 +19,18 @@ namespace Lab1CS
             Array.Resize(ref buf, size);
         }
 
-        public void Add(int val)
+        public void Add(T val)
         {
             if (cnt >= size) { Expd(); }
             buf[cnt] = val;
             cnt++;
 
         }
-        public void Ins(int val, int pos)
+        public void Ins(T val, int pos)
         {
-            if (pos ==  cnt && pos == 0) Add(val);
+            if (pos == cnt && pos == 0) Add(val);
 
-            else if (pos == cnt) Add(val);
-
-            else if (pos < cnt) 
+            else if (pos < cnt)
             {
                 cnt++;
                 if (cnt >= size) Expd();
@@ -50,14 +48,14 @@ namespace Lab1CS
             {
                 for (int i = pos; i < cnt - 1; i++)
                 {
-                    buf[i] = buf[i+1];
+                    buf[i] = buf[i + 1];
                 }
                 cnt--;
             }
 
             else if (pos == cnt - 1 && cnt > 0)
             {
-                buf[pos] = 0;
+                buf[pos] = default;
                 cnt--;
             }
         }
@@ -66,7 +64,7 @@ namespace Lab1CS
         {
             for (int i = 0; i < cnt; i++)
             {
-                buf[i] = 0;
+                buf[i] = default;
             }
             cnt = 0;
         }
@@ -76,12 +74,12 @@ namespace Lab1CS
             get { return cnt; }
         }
 
-        public int this[int i]
-        { 
+        public T this[int i]
+        {
             get
             {
-                if (i >= cnt || i < 0) return 0;
-                
+                if (i >= cnt || i < 0) return default;
+
                 return buf[i];
             }
 
@@ -89,7 +87,7 @@ namespace Lab1CS
             {
                 if (i >= cnt || i < 0) return;
 
-                buf[i] = value; 
+                buf[i] = value;
             }
         }
 

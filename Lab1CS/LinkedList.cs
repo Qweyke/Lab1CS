@@ -58,13 +58,15 @@ namespace Lab1CS
         public void Insert(int value, int posit)
         {
             if (posit == count && posit == 0) Addit(value);
+            
+            else if (posit == count) Addit(value);
 
             else if (posit < count)
             {   
                 if (posit == 0)
                 {
-                    Node curr = Find(posit);
-                    new Node(value) { Next = curr };
+                    //Node curr = Find(posit);
+                    head = new Node(value) { Next = head };
                     count++;
                 }
 
@@ -84,7 +86,8 @@ namespace Lab1CS
             {
                 Node prev = Find(posit - 1);
                 Node current = prev.Next;
-                prev.Next = current.Next; 
+                if (current.Next != null) prev.Next = current.Next;
+                else prev.Next = null;
                 count--;
             }
 

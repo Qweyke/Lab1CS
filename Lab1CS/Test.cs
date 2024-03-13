@@ -10,12 +10,11 @@ namespace Lab1CS
 
             ArrList abstr = new ArrList();
             ChainList chain = new ChainList();
+            DoublyList doubly = new DoublyList();
 
             Random rnd = new Random();
 
-            int iter = 2000;          
-          
-            
+            int iter = 2000;                              
             
             for (int i = 0; i < iter; i++)
             {
@@ -29,18 +28,20 @@ namespace Lab1CS
 
                         abstr.Add(value);
                         chain.Addit(value);
+                        doubly.AddDb(value);
                         break;
 
-                    case 1:
+                    case 2:
 
                         abstr.Del(pos);
                         chain.Delete(pos);
                         break;
                     
-                    case 2:
+                    case 1:
                                                
                         abstr.Ins(value, pos);
                         chain.Insert(value, pos);
+                        doubly.Insert(value, pos);
 
                         break;
 
@@ -62,7 +63,8 @@ namespace Lab1CS
 
             for (int i = 0; i < abstr.Count; i++) 
             {
-                if (abstr[i] != chain[i])
+                if (abstr[i] != chain[i] && abstr[i] != doubly[i] && chain[i] != doubly[i])
+                //if (abstr[i] != chain[i])
                 {
                     Console.WriteLine("Элементы не сошлись");
                     Console.WriteLine($"{abstr[i]}, {chain[i]}, {i}");
@@ -71,11 +73,13 @@ namespace Lab1CS
             }
             if (check == false) Console.WriteLine("Успешно\n");
 
-            Console.WriteLine($"Arr cnt = {abstr.Count}, Chain cnt = {chain.Count}\n");
+            Console.WriteLine($"Arr cnt = {abstr.Count}, Chain cnt = {chain.Count}, Doubly cnt = {doubly.Count}\n");
 
             abstr.Shw();
             Console.WriteLine("\n\n");
             chain.Show();
+            Console.WriteLine("\n\n");
+            doubly.Show();
 
             Console.WriteLine("\n\nНажмите любую клавишу");
             Console.ReadKey();
