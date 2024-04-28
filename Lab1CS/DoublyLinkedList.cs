@@ -35,53 +35,10 @@ namespace Lab1CS
         {
             if (posit >= count || head == null) return null; //if no el rtrn nthng
 
-            else if (posit == 0)
-            {
-                return brwsr[0];
-            }
-
-            else if ( posit >= ((brwsr.Count - 1) * finder) - 1) // if pos is more than last interval end in arr 
-            {
-                int lpos = brwsr.Count - 1;
-                Node F = brwsr[lpos];
-                for (int i = posit - ((lpos * finder) - 1); i != 0; i--)
-                {
-                    F = F.Next;
-                }
-                    return F;
-            }            
-
-            else if ((posit + 1) % finder == 0)
-            {
-                return brwsr[(posit + 1) / finder];
-            }
-
             else
             {
-                int posbr = (posit + 1) / finder; // array pos
-                int mid = (posbr * finder + (posbr + 1) * finder) / 2; // middle value of the interval
-                if ((posit + 1) >= mid) //  <- right end values not positions
-                {
-                    posbr += 1;
-                    Node F = brwsr[posbr];
-                    posbr *= finder;
-                    for (int i = posbr - (posit + 1); i != 0; i--)
-                    {
-                        F = F.Prev;
-                    }
-                    return F;
-                }
-                else // left end ->
-                {
-                    Node F = brwsr[posbr];
-                    posbr *= finder;
-                    for (int i = (posit + 1) - posbr; i != 0; i--)
-                    {
-                        F = F.Next;
-                    }
-                    return F;
-                }                 
-            }                
+
+            }
         }
         public void AddDb(int value)
         {
