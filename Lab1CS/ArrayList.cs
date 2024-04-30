@@ -2,13 +2,13 @@
 
 namespace Lab1CS
 {
-    class ArrList
+    class ArrayList
     {
         int cnt = 0; // pos < cnt if cnt != 0
         int[] buf = null;
         int size = 1;
 
-        public ArrList()
+        public ArrayList()
         {
             buf = new int[size];
         }

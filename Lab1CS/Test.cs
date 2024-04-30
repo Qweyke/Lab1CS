@@ -8,7 +8,7 @@ namespace Lab1CS
         static void Main(string[] args)
         {
 
-            ArrList abstr = new ArrList();
+            ArrayList abstr = new ArrayList();
             ChainList chain = new ChainList();
             DoublyList doubly = new DoublyList();
 
@@ -18,7 +18,7 @@ namespace Lab1CS
             
             for (int i = 0; i < iter; i++)
             {
-                int ops = rnd.Next(5);
+                int ops = rnd.Next(1);
                 int value = rnd.Next(100);
                 int pos = rnd.Next(2000);
 
@@ -28,16 +28,17 @@ namespace Lab1CS
 
                         abstr.Add(value);
                         chain.Addit(value);
-                        doubly.AddDb(value);
+                        doubly.Add(value);
                         break;
 
-                    case 2:
+                    case 1:
 
                         abstr.Del(pos);
                         chain.Delete(pos);
+                        doubly.Delete(pos);
                         break;
                     
-                    case 1:
+                    case 2:
                                                
                         abstr.Ins(value, pos);
                         chain.Insert(value, pos);
@@ -59,27 +60,27 @@ namespace Lab1CS
                 }
             }
 
-            bool check = false;
+            bool check = true;
 
             for (int i = 0; i < abstr.Count; i++) 
             {
-                if (abstr[i] != chain[i] && abstr[i] != doubly[i] && chain[i] != doubly[i])
-                //if (abstr[i] != chain[i])
+                if (abstr[i] == chain[i] && abstr[i] == doubly[i] && chain[i] == doubly[i]) check = true;
+                else
                 {
-                    Console.WriteLine("Элементы не сошлись");
-                    Console.WriteLine($"{abstr[i]}, {chain[i]}, {i}");
-                    check = true;
-                } 
+                    check = false;
+                    Console.WriteLine("Ошибка\n");
+                    break;
+                }
             }
-            if (check == false) Console.WriteLine("Успешно\n");
+            if (check == true) Console.WriteLine("Успешно\n");
 
             Console.WriteLine($"Arr cnt = {abstr.Count}, Chain cnt = {chain.Count}, Doubly cnt = {doubly.Count}\n");
 
-            abstr.Shw();
+            /*abstr.Shw();
             Console.WriteLine("\n\n");
             chain.Show();
             Console.WriteLine("\n\n");
-            doubly.Show();
+            doubly.Show();*/
 
             Console.WriteLine("\n\nНажмите любую клавишу");
             Console.ReadKey();

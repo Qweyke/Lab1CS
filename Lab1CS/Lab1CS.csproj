@@ -44,9 +44,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DoublyLinkedList.cs" />
-    <Compile Include="FileName.cs" />
+    <Compile Include="Companion.cs" />
     <Compile Include="LinkedList.cs" />
-    <Compile Include="AbstractList.cs" />
+    <Compile Include="ArrayList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test.cs" />
   </ItemGroup>
