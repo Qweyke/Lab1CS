@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Xml;
 
 namespace Lab1CS
@@ -24,25 +25,29 @@ namespace Lab1CS
 
         private int Find(int pos) 
         {
-            int low = 0;
-            int high = cnt - 1;          
-            while (low <= high)
+            if (pos == 0) return 0;
+            else
             {
-                int mid = low + (high - low) / 2;
-                if (buf[mid].Pos == pos)
+                int low = 0;
+                int high = cnt - 1;
+                while (low <= high)
                 {
-                    return mid;
-                }
-                else if (buf[mid].Pos < pos)
-                {
-                    low = mid + 1;
-                }
-                else
-                {
-                    high = mid - 1;
+                    int mid = low + (high - low) / 2;
+                    if (buf[mid].Pos == pos)
+                    {
+                        return mid;
+                    }
+                    else if (buf[mid].Pos < pos)
+                    {
+                        low = mid + 1;
+                    }
+                    else
+                    {
+                        high = mid - 1;
+                    }
                 }
             }
-            return -1;
+            throw new IndexOutOfRangeException("trouble in find companion");
         }
         public CompanionList()
         {
@@ -54,22 +59,34 @@ namespace Lab1CS
             {
                 if (index == 0) return buf[index].Node; 
 
-                else if (index < cnt * interval)
+                else if (index < cnt)
                 {
-                    return buf[Find(index)].Node;
+                    return buf[index].Node;
                 }
-                else return default; 
+                else throw new IndexOutOfRangeException("Indexator trouble"); 
             }
 
             set
             {
-                buf[Find(index)].Node = value;
-                buf[Find(index)].Pos = index;
+                if (index < cnt)
+                { 
+                    buf[index].Node = value;
+                }
+                else throw new IndexOutOfRangeException("Indexator set pos trouble");
             }
         }
         public int GetPos(int pos)
         {
             return buf[pos].Pos;
+        }
+        public T GetNode(int pos)
+        {
+            return buf[Find(pos)].Node;
+        }
+        public void SetNode(T node, int pos)
+        {
+            buf[Find(pos)].Node = node;
+            buf[Find(pos)].Pos = pos;
         }
 
         private void Expand()
@@ -83,15 +100,14 @@ namespace Lab1CS
             buf[cnt] = new Element(elem, pos);
             cnt++;
         }     
-        public void Delete(int pos) 
-        {
-            int index = Find(pos);
+        public void Delete(int index) 
+        {           
             if (index == cnt - 1) 
             {
                 buf[index] = default;
                 cnt--;
             }
-            else Console.WriteLine("Wrong del comp");
+            else throw new IndexOutOfRangeException("not last el was deleted");
         }
          public int Count
         {

@@ -45,7 +45,7 @@ namespace Lab1CS
             {
                 int cmpn_index = posit / interval;
                 int left_end = cmpn.GetPos(cmpn_index); // position of the closest interval
-                Node target = cmpn[left_end]; // closest left-side interval L...r
+                Node target = cmpn.GetNode(left_end); // closest left-side interval L...r
 
                 if (cmpn_index + 1 < cmpn.Count) // if right end exists 
                 {
@@ -55,7 +55,7 @@ namespace Lab1CS
                     if (posit > mid_point) // closest is right end - backward mov
                     {
                         int right_end = cmpn.GetPos(cmpn_index + 1);
-                        target = cmpn[right_end];
+                        target = cmpn.GetNode(right_end);
                         for (int i = right_end; i > posit; i--) 
                         {
                             target = target.Prev;
@@ -90,9 +90,9 @@ namespace Lab1CS
                 {
                     cmpn.Append(newbie, count - 1);
                 }
-                if (count % interval == 1)
+                if ((count - 1) % interval == 0)
                 {
-                    cmpn[(count - 2)] = newbie.Prev;
+                    cmpn.SetNode(newbie.Prev, (count - 2));
                 }
             }
         }
@@ -119,7 +119,7 @@ namespace Lab1CS
 
             else if (posit == 0 && posit < count)
             {
-                //Shift(posit);
+                Shift(posit);
                 head = head.Next;
                 head.Prev = null;
                 count--;
@@ -128,7 +128,7 @@ namespace Lab1CS
             else if (posit > 0 && posit < count)
             {              
                 Node prev = Find(posit - 1);
-                //Erase(posit);
+                Shift(posit);
                 Node current = prev.Next;
                 prev.Next = current.Next;
 
@@ -136,6 +136,18 @@ namespace Lab1CS
                 {
                     Node next = current.Next;
                     next.Prev = prev;
+                }            
+                if (posit % interval == 0) // update 49 if pos 50 e.g.
+                {
+                    cmpn.SetNode(prev, posit - 1);
+                }
+                if ((posit + 2) % interval == 0 && count >= posit + 2) // update 49 if pos 50 e.g.
+                {
+                    cmpn.SetNode(prev.Next, posit + 1);
+                }
+                if ((posit + 1) % interval == 0 && prev.Next != null)
+                {
+                    cmpn.SetNode(prev.Next, posit);
                 }
                 count--;
             }         
@@ -144,6 +156,29 @@ namespace Lab1CS
         {
             head = null;
             count = 0;
+        }
+        private void Shift(int posit)
+        {
+            int shift_index = (posit / interval) + 1; // 1 index after shift
+            if (posit == 0) shift_index = 0; // update every elem in cmpn
+            
+            int cmpn_count = cmpn.Count;
+            if (count % 50 == 0) // delete elem in companion 
+            {
+                cmpn.Delete(cmpn_count - 1);
+                cmpn_count -= 1; 
+            }
+            if (cmpn_count - shift_index == 1 && (posit + 1) == count)
+            {
+                cmpn.Delete(shift_index);
+            }
+            else
+            {
+                for (int i = shift_index; i < cmpn_count; i++)
+                {
+                    cmpn[i] = cmpn[i].Next;
+                }
+            }
         }
         public int Count
         {
@@ -181,12 +216,6 @@ namespace Lab1CS
                 Console.Write($"{cur.Data}. ");
             }
             else Console.WriteLine("Нет элементов в DoublyLinked листе");
-        }
-
-        /*private void Shift(int pos_e)
-        {
-            int after = pos_e / interval;
-            for (int i = after; i < ; i++) { }
-        }*/
+        }       
     }
 }

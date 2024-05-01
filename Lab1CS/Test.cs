@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Lab1CS
 {
@@ -14,11 +15,11 @@ namespace Lab1CS
 
             Random rnd = new Random();
 
-            int iter = 2000;                              
+            int iter = 20000;                              
             
             for (int i = 0; i < iter; i++)
             {
-                int ops = rnd.Next(1);
+                int ops = rnd.Next(2);
                 int value = rnd.Next(100);
                 int pos = rnd.Next(2000);
 
@@ -36,6 +37,7 @@ namespace Lab1CS
                         abstr.Del(pos);
                         chain.Delete(pos);
                         doubly.Delete(pos);
+                        //Checker();
                         break;
                     
                     case 2:
@@ -59,28 +61,43 @@ namespace Lab1CS
                         break;
                 }
             }
-
-            bool check = true;
-
-            for (int i = 0; i < abstr.Count; i++) 
+            /*for (int i = 0; i < iter; i++)
+            {               
+                int pos = rnd.Next(200);
+                abstr.Del(pos);
+                chain.Delete(pos);
+                doubly.Delete(pos);
+                //Checker();
+            }*/
+            void Checker()
             {
-                if (abstr[i] == chain[i] && abstr[i] == doubly[i] && chain[i] == doubly[i]) check = true;
-                else
+                bool check = true;
+                bool checker = true;
+
+                for (int i = 0; i < abstr.Count; i++)
                 {
-                    check = false;
-                    Console.WriteLine("Ошибка\n");
-                    break;
+                    if (abstr[i] == chain[i] && abstr[i] == doubly[i] && chain[i] == doubly[i]) check = true;
+                    else
+                    {
+                        
+                        check = false;
+                        checker = false;
+                        Console.WriteLine($"Не сошлись [{i}] у chain = {chain[i]}, у doubly = {doubly[i]}\n");
+                        //throw new IndexOutOfRangeException("Не сошлись");
+                    }
                 }
+                if (checker == true) Console.WriteLine("Успешно\n");
+                else Console.WriteLine("Ошибка\n");
             }
-            if (check == true) Console.WriteLine("Успешно\n");
+            Checker();
 
             Console.WriteLine($"Arr cnt = {abstr.Count}, Chain cnt = {chain.Count}, Doubly cnt = {doubly.Count}\n");
 
-            /*abstr.Shw();
-            Console.WriteLine("\n\n");
+            //abstr.Shw();
+            //Console.WriteLine("\n\n");
             chain.Show();
             Console.WriteLine("\n\n");
-            doubly.Show();*/
+            doubly.Show();
 
             Console.WriteLine("\n\nНажмите любую клавишу");
             Console.ReadKey();
