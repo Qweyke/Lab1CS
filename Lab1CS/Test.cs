@@ -15,11 +15,11 @@ namespace Lab1CS
 
             Random rnd = new Random();
 
-            int iter = 20000;                              
+            int iter = 200000;                              
             
             for (int i = 0; i < iter; i++)
             {
-                int ops = rnd.Next(2);
+                int ops = rnd.Next(4);
                 int value = rnd.Next(100);
                 int pos = rnd.Next(2000);
 
@@ -40,61 +40,47 @@ namespace Lab1CS
                         //Checker();
                         break;
                     
-                    case 2:
+                    case 4:
                                                
                         abstr.Ins(value, pos);
                         chain.Insert(value, pos);
                         doubly.Insert(value, pos);
-
                         break;
 
-                    /*case 3:
-                        //Console.WriteLine("clr");
+                    /*case 2:                       
                         abstr.Clr();
                         chain.Clear();
+                        doubly.Clear();
                         break;*/
                     
-                    case 4:
+                    case 3:
                        
                         abstr[pos] = value;
                         chain[pos] = value;
+                        doubly[pos] = value;
                         break;
                 }
-            }
-            /*for (int i = 0; i < iter; i++)
-            {               
-                int pos = rnd.Next(200);
-                abstr.Del(pos);
-                chain.Delete(pos);
-                doubly.Delete(pos);
-                //Checker();
-            }*/
+            }            
             void Checker()
             {
-                bool check = true;
                 bool checker = true;
-
                 for (int i = 0; i < abstr.Count; i++)
                 {
-                    if (abstr[i] == chain[i] && abstr[i] == doubly[i] && chain[i] == doubly[i]) check = true;
-                    else
+                    if (!(abstr[i] == chain[i] && abstr[i] == doubly[i] && chain[i] == doubly[i]))                    
                     {
-                        
-                        check = false;
                         checker = false;
-                        Console.WriteLine($"Не сошлись [{i}] у chain = {chain[i]}, у doubly = {doubly[i]}\n");
-                        //throw new IndexOutOfRangeException("Не сошлись");
+                        Console.WriteLine($"Не сошлись [{i}] у chain = {chain[i]}, у doubly = {doubly[i]}\n"); 
                     }
                 }
                 if (checker == true) Console.WriteLine("Успешно\n");
                 else Console.WriteLine("Ошибка\n");
             }
-            Checker();
 
+            Checker();
             Console.WriteLine($"Arr cnt = {abstr.Count}, Chain cnt = {chain.Count}, Doubly cnt = {doubly.Count}\n");
 
-            //abstr.Shw();
-            //Console.WriteLine("\n\n");
+            abstr.Shw();
+            Console.WriteLine("\n\n");
             chain.Show();
             Console.WriteLine("\n\n");
             doubly.Show();

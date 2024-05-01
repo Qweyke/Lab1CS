@@ -113,71 +113,65 @@ namespace Lab1CS
             if (posit == 0 && count == 1)
             {
                 head = null;
+                cmpn.Delete(0);
                 count--;
-                cmpn.Delete(posit);
             }
 
             else if (posit == 0 && posit < count)
             {
-                Shift(posit);
                 head = head.Next;
                 head.Prev = null;
+                cmpn[0] = head;
+                Shift(posit);
                 count--;
             }
 
             else if (posit > 0 && posit < count)
             {              
-                Node prev = Find(posit - 1);
-                Shift(posit);
-                Node current = prev.Next;
-                prev.Next = current.Next;
+                Node deleted = Find(posit);               
+                Node previous = deleted.Prev;
+                previous.Next = deleted.Next;
+                if (previous.Next != null)
+                {
+                    Node new_current = previous.Next;
+                    new_current.Prev = previous;
 
-                if (current.Next != null)
-                {
-                    Node next = current.Next;
-                    next.Prev = prev;
+                    if ((posit + 2) % interval == 0 && count >= posit + 2) // update 49 if pos 48 e.g. // good
+                    {
+                        cmpn.SetNode(new_current, posit + 1); // 48 to 49 place
+                    }
+                    if ((posit + 1) % interval == 0) //if posit == 49 // good
+                    {
+                        cmpn.SetNode(previous, posit); // 48 to 49 place 
+                    }
                 }            
-                if (posit % interval == 0) // update 49 if pos 50 e.g.
+                if (posit % interval == 0) // update 49 if pos 50 e.g. // good
                 {
-                    cmpn.SetNode(prev, posit - 1);
+                    cmpn.SetNode(previous, posit - 1);
                 }
-                if ((posit + 2) % interval == 0 && count >= posit + 2) // update 49 if pos 50 e.g.
+
+                if ((posit + 1) % interval == 0 && count == (posit + 1)) // if pos 49 , 149 etc
                 {
-                    cmpn.SetNode(prev.Next, posit + 1);
+                    cmpn.Delete(cmpn.Find(posit));
+                    count--;
+                    return;
                 }
-                if ((posit + 1) % interval == 0 && prev.Next != null)
-                {
-                    cmpn.SetNode(prev.Next, posit);
-                }
+                Shift(posit);
                 count--;
             }         
-        }
-        public void Clear()
-        {
-            head = null;
-            count = 0;
-        }
+        }       
         private void Shift(int posit)
         {
             int shift_index = (posit / interval) + 1; // 1 index after shift
-            if (posit == 0) shift_index = 0; // update every elem in cmpn
-            
-            int cmpn_count = cmpn.Count;
+                                                      
             if (count % 50 == 0) // delete elem in companion 
             {
-                cmpn.Delete(cmpn_count - 1);
-                cmpn_count -= 1; 
+                cmpn.Delete(cmpn.Count - 1);
             }
-            if (cmpn_count - shift_index == 1 && (posit + 1) == count)
+
+            for (int i = shift_index; i < cmpn.Count; i++)
             {
-                cmpn.Delete(shift_index);
-            }
-            else
-            {
-                for (int i = shift_index; i < cmpn_count; i++)
-                {
-                    cmpn[i] = cmpn[i].Next;
-                }
+                cmpn[i] = cmpn[i].Next;
             }
         }
         public int Count
@@ -202,6 +196,12 @@ namespace Lab1CS
                 Node st = Find(i);
                 st.Data = value;
             }
+        }
+        public void Clear()
+        {
+            head = null;
+            cmpn.Clear();
+            count = 0;
         }
         public void Show()
         {

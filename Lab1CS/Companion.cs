@@ -21,9 +21,7 @@ namespace Lab1CS
         int cnt = 0;
         Element[] buf = null;
         int size = 1;
-
-
-        private int Find(int pos) 
+        public int Find(int pos) 
         {
             if (pos == 0) return 0;
             else
@@ -109,7 +107,7 @@ namespace Lab1CS
             }
             else throw new IndexOutOfRangeException("not last el was deleted");
         }
-         public int Count
+        public int Count
         {
             get { return cnt; }
         } 

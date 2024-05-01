@@ -65,7 +65,6 @@ namespace Lab1CS
             {   
                 if (posit == 0)
                 {
-                    //Node curr = Find(posit);
                     head = new Node(value) { Next = head };
                     count++;
                 }
