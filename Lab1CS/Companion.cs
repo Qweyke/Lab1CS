@@ -24,18 +24,25 @@ namespace Lab1CS
 
         private int Find(int pos) 
         {
-            int mid = cnt / 2; 
-            bool found = false;
-            while (!found)
+            int low = 0;
+            int high = cnt - 1;          
+            while (low <= high)
             {
-                if (buf[mid].Pos == pos) found = true;
-                else if (pos > mid)
+                int mid = low + (high - low) / 2;
+                if (buf[mid].Pos == pos)
                 {
-                    mid = (mid + cnt) / 2;
+                    return mid;
                 }
-                else mid /= 2;
+                else if (buf[mid].Pos < pos)
+                {
+                    low = mid + 1;
+                }
+                else
+                {
+                    high = mid - 1;
+                }
             }
-            return mid;
+            return -1;
         }
         public CompanionList()
         {
@@ -86,6 +93,11 @@ namespace Lab1CS
             }
             else Console.WriteLine("Wrong del comp");
         }
+         public int Count
+        {
+            get { return cnt; }
+        } 
+
         public void Clear()
         {
             for (int i = 0; i < cnt; i++)
