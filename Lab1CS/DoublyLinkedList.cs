@@ -30,6 +30,8 @@ namespace Lab1CS
         readonly CompanionList<Node> cmpn = new CompanionList<Node>();
 
         Node head = null;
+        Node tail = null;
+        
         int count = 0; 
 
         public const int interval = 50; // each 50-th elem
@@ -97,15 +99,70 @@ namespace Lab1CS
             }
         }
         public void Insert(int value, int posit)
-        {
-            if (posit == 0 && posit == count ) Add(value); // head != null??
-
-            else if (posit == count) Add(value);
-
+        {           
+            if (posit == count) Add(value);
             else if (posit < count)
             {
-                
+                if ((count + 1) % interval == 0) // check for new elem in cmpn
+                {
+                    tail = Find(count - 1);
+                }
+
+                if (posit == 0)
+                {
+                    head = new Node(value) { Next = head };
+                    head.Next.Prev = head;
+                    cmpn[0] = head;
+                    ShiftForward(posit);
+                    count++;
+                }
+                else
+                {
+                    Node prev = Find(posit - 1);
+                    Node curr = Find(posit);
+                    Node insr = new Node(value) { Next = curr, Prev = prev };
+                    prev.Next = insr;
+                    curr.Prev = insr;
+
+                    if ((posit + 2) % interval == 0 && count >= posit + 2) // update 49 if pos 48 e.g. 
+                    {
+                        cmpn.SetNode(curr.Next, posit + 1); // 
+                    }
+
+                    if (posit % interval == 0) // no update in shift // 50 pos
+                    {
+                        cmpn.SetNode(prev, posit - 1);
+                    }
+
+                    if ((posit + 1) % interval == 0) //if posit == 49 
+                    {
+                        if (count == (posit + 1))
+                        {
+                            cmpn.SetNode(insr, posit);
+                            count++;
+                            tail = null;
+                            return;
+                        }
+                        cmpn.SetNode(curr, posit); // 48 to 49 place 
+                    }
+                    ShiftForward(posit);
+                    count++;
+                }
             }
+        }
+        private void ShiftForward(int posit)
+        {
+            int shift_index = (posit / interval) + 1; // 1 index after shift
+
+            for (int i = shift_index; i < cmpn.Count; i++)
+            {
+                cmpn[i] = cmpn[i].Prev;
+            }
+
+            if ((count + 1) % interval == 0) // add elem in companion 
+            {
+                cmpn.Append(tail, count);
+            }             
         }
         public void Delete(int posit)
         {

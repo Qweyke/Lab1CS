@@ -61,7 +61,7 @@ namespace Lab1CS
                 {
                     return buf[index].Node;
                 }
-                else throw new IndexOutOfRangeException("Indexator trouble"); 
+                else throw new IndexOutOfRangeException("Indexator get trouble"); 
             }
 
             set
