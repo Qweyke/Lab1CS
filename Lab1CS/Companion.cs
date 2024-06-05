@@ -21,7 +21,7 @@ namespace Lab1CS
         int cnt = 0;
         Element[] buf = null;
         int size = 1;
-        public int Find(int pos) 
+        public int Find(int pos)
         {
             if (pos == 0) return 0;
             else
@@ -46,6 +46,26 @@ namespace Lab1CS
                 }
             }
             throw new IndexOutOfRangeException("trouble in find companion");
+        }
+
+        public int FindClosest(int pos)
+        {
+            int closest = buf[0].Pos;
+            int diff = Math.Abs(closest - pos);
+
+            for (int i = 1; i < cnt; i++)
+            {
+                int check_el = buf[i].Pos;
+                if (Math.Abs(check_el - pos) < diff)
+                {                
+                    diff = Math.Abs(check_el - pos);
+                    closest = check_el;
+                }
+            }
+            int direction = pos - closest;
+            if (direction < 0) closest *= -1; // closest el is on the right side
+            
+            return closest;
         }
         public CompanionList()
         {
@@ -72,10 +92,6 @@ namespace Lab1CS
                 }
                 else throw new IndexOutOfRangeException("Indexator set pos trouble");
             }
-        }
-        public int GetPos(int pos)
-        {
-            return buf[pos].Pos;
         }
         public T GetNode(int pos)
         {

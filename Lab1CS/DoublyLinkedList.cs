@@ -42,36 +42,29 @@ namespace Lab1CS
             if (posit >= count || head == null) return null;
 
             else if (posit == 0 && count != 0) return head;
-            
+
             else
             {
-                int cmpn_index = posit / interval;
-                int left_end = cmpn.GetPos(cmpn_index); // position of the closest interval
-                Node target = cmpn.GetNode(left_end); // closest left-side interval L...r
+                int closest_direction = cmpn.FindClosest(posit); // direction depends on the sign 
+                int closest_pos = Math.Abs(closest_direction); // pos without sign
+                Node target_el = cmpn.GetNode(closest_pos); // closest el
 
-                if (cmpn_index + 1 < cmpn.Count) // if right end exists 
+                if (closest_direction < 0)
                 {
-                    int mid_point = (left_end + (left_end + interval)) / 2;
-                    if (cmpn_index == 0) mid_point = interval_pos / 2;
-
-                    if (posit > mid_point) // closest is right end - backward mov
+                    for (int i = closest_pos; i > posit; i--)
                     {
-                        int right_end = cmpn.GetPos(cmpn_index + 1);
-                        target = cmpn.GetNode(right_end);
-                        for (int i = right_end; i > posit; i--) 
-                        {
-                            target = target.Prev;
-                        }
-                        return target;                       
+                        target_el = target_el.Prev;
                     }
                 }
-
-                for (int i = left_end; i < posit; i++) // forward movement if no right end or left is closest
+                else
                 {
-                    target = target.Next;
+                    for (int i = closest_pos; i < posit; i++)
+                    {
+                        target_el = target_el.Next;
+                    }               
                 }
-                return target;
-            }             
+                return target_el;
+            }            
         }
         public void Add(int value)
         {
